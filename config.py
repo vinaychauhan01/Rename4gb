@@ -83,8 +83,8 @@ class rkn(object):
 ├🖥️ Dᴇᴠᴇʟᴏᴩᴇʀꜱ : <a href=https://t.me/V_Sbotmaker>🅱🅾🆃 🅼🅰🅺🅴🆁 ® 🇮🇳 ® 🅼🅾🆅🅸🅴🆂 🆆🅰🅻🅰</a>
 ├📕 Host : Vps
 ├✏️ Lᴀɴɢᴜᴀɢᴇ: Python 
-├💾 Dᴀᴛᴀ Bᴀꜱᴇ: {}
-├📊 ᴠᴇʀsɪᴏɴ: {}</b>     
+├💾 Dᴀᴛᴀ Bᴀꜱᴇ: Mongodb
+├📊 ᴠᴇʀsɪᴏɴ: 3.10.8</b>     
 ╰───────────────⍟ """
 
     HELP_TXT = """
