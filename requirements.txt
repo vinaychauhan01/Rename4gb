@@ -9,3 +9,4 @@ pytz
 psutil
 pyromod
 ffmpeg-python
+ffmpeg
