@@ -24,6 +24,7 @@ Telegram Link : https://t.me/Digital_Botz
 Repo Link : https://github.com/DigitalBotz/Digital-Rename-Bot
 License Link : https://github.com/DigitalBotz/Digital-Rename-Bot/blob/main/LICENSE
 """
+from pyromod import ListenerTimeout
 
 __name__ = "Digital-Rename-Bot"
 __version__ = "3.0.8"
