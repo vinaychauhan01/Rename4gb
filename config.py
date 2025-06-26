@@ -183,7 +183,7 @@ Exᴀᴍᴩʟᴇ:- `/set_prefix @Animeworld_zone`
 --change-subtitle-title @Animeworld_zone
 --change-author @Animeworld_zone` 
 
-📥 Fᴏʀ Hᴇʟᴘ Cᴏɴᴛ. @Digital_Botz
+📥 Fᴏʀ Hᴇʟᴘ Cᴏɴᴛ. @V_Sbotmaker
 """
     
     RKN_PROGRESS = """<b>\n
