@@ -33,7 +33,7 @@ License Link : https://github.com/DigitalBotz/Digital-Rename-Bot/blob/main/LICEN
 import aiohttp, asyncio, warnings, pytz, datetime
 import logging
 import logging.config
-import glob, sys, importlib, pyromod
+import glob, sys, importlib
 from pathlib import Path
 
 # pyrogram imports
