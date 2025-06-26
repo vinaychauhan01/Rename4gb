@@ -42,6 +42,19 @@ from config import Config, rkn
 from helper.utils import humanbytes
 from plugins import __version__ as _bot_version_, __developer__, __database__, __library__, __language__, __programer__
 
+
+from pyromod.listen import ListenerTypes
+
+def ensure_listener_types(client):
+    if not hasattr(client, "listeners"):
+        client.listeners = {}
+    for listener_type in ListenerTypes:
+        client.listeners.setdefault(listener_type, [])
+
+# Call this after you create your Pyrogram Client instance
+ensure_listener_types(app)  # Assuming `app` is your Client
+
+
 upgrade_button = InlineKeyboardMarkup([[        
         InlineKeyboardButton('buy premium ✓', user_id=int(5741918628)),
          ],[
