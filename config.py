@@ -11,7 +11,7 @@ class Config(object):
     BOT_TOKEN = os.environ.get("BOT_TOKEN", "7877612758:AAETBEhLEdTJdruAJBDjQME5KecpPYsErrw") 
 
     # premium account string session required 😢 
-    STRING_SESSION = os.environ.get("STRING_SESSION", "BQFIV_cAqo6mc5u-QZTzawFwQGUGkWjldYNbE1MKT9WWETJikOxyXebt8n0SL-rJi62E9NI2AbBdEZLGN4hQFGusSkmHh230C6lPAGX3-wDP8tluiyM8pmjNL_W4UERPxFoGWdBULK4e6M1KcSgDALIT6ssn7rjV2XKzuJaLzZ4sASzb8ONXfuV4xp0deFWDIENbuMraCIBiwWaoq01A-HHOGT45t1O-1yU6-FbISG9cVV2vcFtBYvFrNpvg2gIm6lImTEBiZByNv59v-BeEnkqCZsYwYmj-lNh9GejTCyGuoqgv1OQNM7EWwC00xHT3CJhEJzw4E-xGUgUXvqv-3AHG8gePaAAAAAFWPrmkAA")
+    STRING_SESSION = os.environ.get("STRING_SESSION", "")
     
     # database config
     DB_NAME = os.environ.get("DB_NAME","Rename")     
