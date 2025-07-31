@@ -6,6 +6,7 @@ dnspython
 hachoir
 Pillow
 aiohttp
+psutil
 pytz
 humanize
 pyromod
