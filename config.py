@@ -15,7 +15,7 @@ class Config(object):
     
     # database config
     DB_NAME = os.environ.get("DB_NAME","Rename")     
-    DB_URL = os.environ.get("DB_URL","mongodb+srv://vinayjaat698:rename@rename.93x2fme.mongodb.net/?retryWrites=true&w=majority&appName=Rename")
+    DB_URL = os.environ.get("DB_URL","")
  
     # other configs
     RKN_PIC = os.environ.get("RKN_PIC", "https://envs.sh/E6l.jpg")
