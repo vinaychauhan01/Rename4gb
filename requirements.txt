@@ -1,7 +1,8 @@
 pyrofork==2.3.45
 pyromod
 TgCrypto==1.2.5
-motor==3.5.1
+pymongo==3.12.3
+motor==2.5.1
 dnspython==2.6.1
 hachoir==3.3.0
 Pillow==10.4.0
