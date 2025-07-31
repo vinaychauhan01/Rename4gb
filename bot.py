@@ -7,14 +7,14 @@ import logging
 import logging.config
 import glob
 import sys
-import importlib.util  # Fixed import
+import importlib.util
 from pathlib import Path
 
-# Pyrogram imports (use pyrofork if you prefer Pyrofork)
+# Pyrogram imports
 import pyrogram.utils
 from pyrogram import Client, __version__, errors
 from pyrogram.raw.all import layer
-from pyromod import listen  # Import pyromod for listener initialization
+import pyromod  # Import pyromod for conversational features
 
 # Bot imports
 from config import Config
@@ -47,8 +47,6 @@ class DigitalRenameBot(Client):
             plugins={"root": "plugins"},
             sleep_threshold=15
         )
-        # Initialize listeners to prevent KeyError
-        self.listeners[listen.ListenerTypes.MESSAGE] = []
 
     async def start(self):
         try:
