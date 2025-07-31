@@ -1,5 +1,4 @@
 
-from pyromod.exceptions import ListenerTimeout
 
 __name__ = "Digital-Rename-Bot"
 __version__ = "3.0.8"
