@@ -35,7 +35,7 @@ from pyrogram.types import Message, CallbackQuery, InlineKeyboardButton, InlineK
 
 # extra imports
 from helper.database import digital_botz
-from pyromod.listen import ListenerTimeout
+from pyromod.exceptions import ListenerTimeout
 from config import rkn
 
 TRUE = [[InlineKeyboardButton('ᴍᴇᴛᴀᴅᴀᴛᴀ ᴏɴ', callback_data='metadata_1'),
