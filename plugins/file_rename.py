@@ -20,7 +20,7 @@ from config import Config
 from asyncio import sleep
 import os, time, asyncio
 
-UPLOAD_TEXT = """Uploading Started...."""
+UPLOAD_TEXT = """Uploading Started..."""
 DOWNLOAD_TEXT = """Download Started..."""
 
 app = Client("4gb_FileRenameBot", api_id=Config.API_ID, api_hash=Config.API_HASH, session_string=Config.STRING_SESSION)
@@ -151,7 +151,7 @@ async def doc(bot, update):
             message=file,
             file_name=file_path,
             block=True,
-            chunk_size=4*1024*1024,  # 4 MB chunks for faster downloads
+            chunk_size=4*1024*1024,  # 4 MB chunks
             progress=progress_for_pyrogram,
             progress_args=(DOWNLOAD_TEXT, rkn_processing, time.time())
         )
@@ -216,7 +216,7 @@ async def doc(bot, update):
                     document=chunk,
                     thumb=ph_path,
                     caption=caption,
-                    chunk_size=4*1024*1024,  # 4 MB chunks for uploads
+                    chunk_size=4*1024*1024,  # 4 MB chunks
                     progress=progress_for_pyrogram,
                     progress_args=(UPLOAD_TEXT, rkn_processing, time.time())
                 )
