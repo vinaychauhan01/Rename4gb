@@ -22,6 +22,8 @@ from config import Config
 from asyncio import sleep
 import os, time, asyncio
 
+TEMP_DIR = "/dev/shm/renamebot"
+os.makedirs(TEMP_DIR, exist_ok=True)
 
 UPLOAD_TEXT = """Uploading Started...."""
 DOWNLOAD_TEXT = """Download Started..."""
@@ -148,9 +150,9 @@ async def doc(bot, update):
     media = getattr(file, file.media.value)
 	
     # file downloaded path
-    file_path = f"Renames/{new_filename}"
+    file_path = os.path.join(TEMP_DIR, new_filename)
     
-    metadata_path = f"Metadata/{new_filename}"    
+    metadata_path = os.path.join(TEMP_DIR, new_filename)    
 
     await rkn_processing.edit("`Try To Download....`")
     if bot.premium and bot.uploadlimit:
