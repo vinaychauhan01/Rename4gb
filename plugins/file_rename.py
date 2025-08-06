@@ -229,7 +229,7 @@ async def doc(bot, update):
                     caption=caption,
                     thumb=ph_path,
                     duration=duration,
-                    chunk_size=4*1024*1024,
+                    
                     supports_streaming=True,
                     progress=progress_for_pyrogram,
                     progress_args=(UPLOAD_TEXT, rkn_processing, time.time())
