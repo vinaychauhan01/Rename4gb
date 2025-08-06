@@ -35,13 +35,17 @@ async def rename_start(client, message):
     dcid = FileId.decode(rkn_file.file_id).dc_id
     extension_type = mime_type.split('/')[0]
 
-    if client.premium and client.uploadlimit:
+    # Check if user has Telegram Premium and if upload limit is enforced
+    is_premium = message.from_user.is_premium if message.from_user else False
+    upload_limit_enabled = getattr(Config, 'UPLOAD_LIMIT_ENABLED', False)  # Assume Config has this setting
+
+    if is_premium and upload_limit_enabled:
         await digital_botz.reset_uploadlimit_access(user_id)
         user_data = await digital_botz.get_user_data(user_id)
         limit = user_data.get('uploadlimit', 0)
         used = user_data.get('used_limit', 0)
         remain = int(limit) - int(used)
-        used_percentage = int(used) / int(limit) * 100
+        used_percentage = int(used) / int(limit) * 100 if limit > 0 else 0
         if remain < int(rkn_file.file_size):
             return await message.reply_text(
                 f"{used_percentage:.2f}% Of Daily Upload Limit {humanbytes(limit)}.\n\n"
@@ -50,7 +54,7 @@ async def rename_start(client, message):
                 reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🪪 Uᴘɢʀᴀᴅᴇ", callback_data="plans")]])
             )
 
-    if await digital_botz.has_premium_access(user_id) and client.premium:
+    if await digital_botz.has_premium_access(user_id) and is_premium:
         if not Config.STRING_SESSION:
             if rkn_file.file_size > 2000 * 1024 * 1024:
                 return await message.reply_text("Sᴏʀʀy Bʀᴏ Tʜɪꜱ Bᴏᴛ Iꜱ Dᴏᴇꜱɴ'ᴛ Sᴜᴩᴩᴏʀᴛ Uᴩʟᴏᴀᴅɪɴɢ Fɪʟᴇꜱ Bɪɢɢᴇʀ Tʜᴀɴ 2Gʙ+")
@@ -69,10 +73,10 @@ async def rename_start(client, message):
                 reply_to_message_id=message.id,
                 reply_markup=ForceReply(True)
             )
-        except:
-            pass
+        except Exception as e:
+            await message.reply_text(f"Error: {e}")
     else:
-        if rkn_file.file_size > 2000 * 1024 * 1024 and client.premium:
+        if rkn_file.file_size > 2000 * 1024 * 1024 and is_premium:
             return await message.reply_text("If you want to rename 4GB+ files then you will have to buy premium. /plans")
 
         try:
@@ -89,8 +93,8 @@ async def rename_start(client, message):
                 reply_to_message_id=message.id,
                 reply_markup=ForceReply(True)
             )
-        except:
-            pass
+        except Exception as e:
+            await message.reply_text(f"Error: {e}")
 
 @Client.on_message(filters.private & filters.reply)
 async def refunc(client, message):
@@ -139,7 +143,10 @@ async def doc(bot, update):
     metadata_path = f"/tmp/Metadata/{new_filename}"
 
     await rkn_processing.edit("`Try To Download....`")
-    if bot.premium and bot.uploadlimit:
+    is_premium = update.from_user.is_premium if update.from_user else False
+    upload_limit_enabled = getattr(Config, 'UPLOAD_LIMIT_ENABLED', False)
+
+    if is_premium and upload_limit_enabled:
         limit = user_data.get('uploadlimit', 0)
         used = user_data.get('used_limit', 0)
         await digital_botz.set_used_limit(user_id, media.file_size)
@@ -158,9 +165,10 @@ async def doc(bot, update):
                 await progress_for_pyrogram(downloaded, total_size, DOWNLOAD_TEXT, rkn_processing, start_time)
         dl_path = file_path
     except Exception as e:
-        if bot.premium and bot.uploadlimit:
+        if is_premium and upload_limit_enabled:
             used_remove = int(used) - int(media.file_size)
             await digital_botz.set_used_limit(user_id, used_remove)
+        await remove_path(file_path, metadata_path)
         return await rkn_processing.edit(f"Error: {e}")
 
     metadata_mode = await digital_botz.get_metadata_mode(user_id)
@@ -177,10 +185,11 @@ async def doc(bot, update):
     duration = 0
     try:
         parser = createParser(file_path)
-        metadata = extractMetadata(parser)
-        if metadata.has("duration"):
-            duration = metadata.get('duration').seconds
-        parser.close()
+        if parser:
+            metadata = extractMetadata(parser)
+            if metadata and metadata.has("duration"):
+                duration = metadata.get('duration').seconds
+            parser.close()
     except:
         pass
 
@@ -191,22 +200,28 @@ async def doc(bot, update):
         try:
             caption = c_caption.format(filename=new_filename, filesize=humanbytes(media.file_size), duration=convert(duration))
         except Exception as e:
-            if bot.premium and bot.uploadlimit:
+            if is_premium and upload_limit_enabled:
                 used_remove = int(used) - int(media.file_size)
                 await digital_botz.set_used_limit(user_id, used_remove)
+            await remove_path(file_path, metadata_path)
             return await rkn_processing.edit(text=f"Yᴏᴜʀ Cᴀᴩᴛɪᴏɴ Eʀʀᴏʀ Exᴄᴇᴩᴛ Kᴇyᴡᴏʀᴅ Aʀɢᴜᴍᴇɴᴛ ●> ({e})")
     else:
         caption = f"**{new_filename}**"
 
     if media.thumbs or c_thumb:
-        if c_thumb:
-            ph_path = await bot.download_media(c_thumb)
-        else:
-            ph_path = await bot.download_media(media.thumbs[0].file_id)
-        Image.open(ph_path).convert("RGB").save(ph_path)
-        img = Image.open(ph_path)
-        img.resize((320, 320))
-        img.save(ph_path, "JPEG")
+        try:
+            if c_thumb:
+                ph_path = await bot.download_media(c_thumb)
+            else:
+                ph_path = await bot.download_media(media.thumbs[0].file_id)
+            if ph_path:
+                Image.open(ph_path).convert("RGB").save(ph_path)
+                img = Image.open(ph_path)
+                img.resize((320, 320))
+                img.save(ph_path, "JPEG")
+        except Exception as e:
+            await rkn_processing.edit(f"Thumbnail Error: {e}")
+            ph_path = None
 
     type = update.data.split("_")[1]
     try:
@@ -229,7 +244,7 @@ async def doc(bot, update):
                     caption=caption,
                     thumb=ph_path,
                     duration=duration,
-                    
+                    chunk_size=4*1024*1024,
                     supports_streaming=True,
                     progress=progress_for_pyrogram,
                     progress_args=(UPLOAD_TEXT, rkn_processing, time.time())
@@ -252,7 +267,7 @@ async def doc(bot, update):
                 await bot.copy_message(update.from_user.id, from_chat, mg_id)
                 await bot.delete_messages(from_chat, mg_id)
     except Exception as e:
-        if bot.premium and bot.uploadlimit:
+        if is_premium and upload_limit_enabled:
             used_remove = int(used) - int(media.file_size)
             await digital_botz.set_used_limit(user_id, used_remove)
         await remove_path(ph_path, file_path, dl_path, metadata_path)
