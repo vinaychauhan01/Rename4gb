@@ -1,7 +1,10 @@
 # Use the official Python image
 FROM python:3.10-slim
 
-RUN apt-get update -qq && apt-get -y install ffmpeg
+# Install system dependencies
+RUN apt-get update -qq && \
+    apt-get -y install ffmpeg gcc python3-dev libffi-dev build-essential && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
 WORKDIR /app
