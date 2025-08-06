@@ -147,13 +147,16 @@ async def doc(bot, update):
         await digital_botz.set_used_limit(user_id, total_used)
 
     try:
-        dl_path = await bot.download_media(
-            message=file,
-            file_name=file_path,
-            block=True,
-            progress=progress_for_pyrogram,
-            progress_args=(DOWNLOAD_TEXT, rkn_processing, time.time())
-        )
+        # Use stream_media for chunked downloads
+        total_size = media.file_size
+        downloaded = 0
+        start_time = time.time()
+        with open(file_path, 'wb') as f:
+            async for chunk in bot.stream_media(message=file, limit=0):
+                f.write(chunk)
+                downloaded += len(chunk)
+                await progress_for_pyrogram(downloaded, total_size, DOWNLOAD_TEXT, rkn_processing, start_time)
+        dl_path = file_path
     except Exception as e:
         if bot.premium and bot.uploadlimit:
             used_remove = int(used) - int(media.file_size)
