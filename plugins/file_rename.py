@@ -22,7 +22,7 @@ from config import Config
 from asyncio import sleep
 import os, time, asyncio
 
-TEMP_DIR = "/dev/shm/renamebot"
+TEMP_DIR = "/dev/shm/renames"
 os.makedirs(TEMP_DIR, exist_ok=True)
 
 UPLOAD_TEXT = """Uploading Started...."""
