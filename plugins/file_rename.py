@@ -147,9 +147,10 @@ async def doc(bot, update):
     media = getattr(file, file.media.value)
 	
     # file downloaded path
-    file_path = os.path.join(TEMP_DIR, new_filename)
+    file_path = f"Renames/{new_filename}"
     
-    metadata_path = os.path.join(TEMP_DIR, new_filename)    
+    metadata_path = f"Metadata/{new_filename}"    
+        
 
     await rkn_processing.edit("`Try To Download....`")
     if bot.premium and bot.uploadlimit:
